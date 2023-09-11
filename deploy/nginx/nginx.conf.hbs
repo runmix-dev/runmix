@@ -1,0 +1,14 @@
+server
+{
+  listen 80;
+  server_name {{domain}};
+  index index.html;
+
+  location / {
+    alias {{root}};
+    try_files $uri $uri/ /index.html last;
+    if ($request_filename ~ .*\.html$) {
+      add_header Cache-Control "no-store, no-cache, must-revalidate";
+    }
+  }
+}

@@ -1,11 +1,20 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
+  mode: 'development',
   entry: './src/App.jsx',
   module: {
     rules: [
       {
         test: /\.jsx?$/i,
         use: 'babel-loader'
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
+        type: 'asset/resource'
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
@@ -16,5 +25,13 @@ module.exports = {
   ],
   output: {
     filename: 'app.[contenthash:8].js'
+  },
+  devServer: {
+    client: {
+      overlay: {
+        warnings: false,
+        errors: true,
+      }
+    }
   }
 }

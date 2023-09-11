@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "webpack",
+    "build": "webpack --mode production",
+    "build-nginx": "node ./deploy/nginx/build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,8 +19,12 @@
   "devDependencies": {
     "@babel/preset-react": "^7.22.15",
     "babel-loader": "^9.1.3",
+    "css-loader": "^6.8.1",
+    "handlebars": "^4.7.8",
     "html-webpack-plugin": "^5.5.3",
+    "style-loader": "^3.3.3",
     "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   }
 }
