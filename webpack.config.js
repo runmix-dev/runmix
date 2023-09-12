@@ -26,9 +26,6 @@ module.exports = {
   output: {
     filename: 'app.[contenthash:8].js'
   },
-  transform: {
-    '\\.[jt]sx?$': 'babel-jest',
-  },
   devServer: {
     client: {
       overlay: {
