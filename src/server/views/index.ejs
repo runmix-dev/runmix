@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- titleTag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="<%= assets.main.css %>">
+  </head>
+  <body>
+    <div id="root"><%- appString %></div>
+    <script type="text/javascript">
+      window.__PRELOADED_STATE__ = <%- JSON.stringify(injectedPreloadState).replace(/</g, '\\u003c') %>
+    </script>
+    <% if (isProd) { %>
+      <script type="text/javascript" src="<%= assets.main.js %>"></script>
+    <% } else { %>
+      <script type="module" src="<%= assets.main.mjs %>"></script>
+    <% } %>
+  </body>
+</html>
