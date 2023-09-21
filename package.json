@@ -9,8 +9,6 @@
     "build:web": "webpack --config ./webpack/client.config.js --env prod",
     "build:node": "webpack --config ./webpack/server.config.js --env prod",
     "clean": "rm -rf dist && mkdir -p dist/server",
-    "dev2": "webpack",
-    "build2": "webpack --mode production",
     "build-nginx": "node ./deploy/nginx/build.js",
     "test": "jest"
   },

@@ -8,14 +8,16 @@ export default function RunmixApp({helmetContext = {}}) {
   const handleClick = () => setVisible(true)
   return (
     <HelmetProvider context={helmetContext}>
-      <div>
+      <div className='app'>
         <Helmet>
           <title>首页</title>
         </Helmet>
-        <h1>Welcome to RunmixApp</h1>
+        <h1>Welcome to Runmix</h1>
+        <div>
+          <img src={logo} style={{width: 60}} />
+        </div>
         {visible && <div>You clicked button</div>}
-        <button onClick={handleClick}>Click me to test hydration</button>
-        <img src={logo} style={{width: 60}} />
+        <button className='btn' onClick={handleClick}>Click me to test hydration</button>
       </div>
     </HelmetProvider>
   );
