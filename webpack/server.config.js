@@ -1,6 +1,6 @@
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
-const { getWebpackDefinePlugin } = require('./utils')
+const { getWebpackDefinePlugin, getDevPublicPath } = require('./utils')
 const webpack = require('webpack')
 
 module.exports = (env = {}) => {
@@ -11,7 +11,7 @@ module.exports = (env = {}) => {
     output: {
       path: path.resolve(__dirname, '../dist/server'),
       filename: 'server.js',
-      publicPath: 'http://localhost:3001/static/'
+      publicPath: getDevPublicPath(isProd)
     },  
     target: 'node',
     externalsPresets: { node: true },
@@ -48,7 +48,7 @@ module.exports = (env = {}) => {
       alias: {
         '@dist': path.resolve(__dirname, '../dist')
       },
-      extensions: ['.js', '.json']
+      extensions: ['.js', '.json', '.jsx']
     },
     plugins: [
       new webpack.DefinePlugin(getWebpackDefinePlugin({

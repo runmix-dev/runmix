@@ -1,4 +1,9 @@
 import { hydrateRoot } from 'react-dom/client';
 import RunmixApp from './App.jsx'
+import { BrowserRouter } from 'react-router-dom';
 
-hydrateRoot(document.getElementById('root'), <RunmixApp />);
+const createApp = () => (
+  <RunmixApp Router={BrowserRouter} />
+)
+
+hydrateRoot(document.getElementById('root'), createApp());

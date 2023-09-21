@@ -1,24 +1,18 @@
-import { useState } from 'react'
-import logo from './assets/images/logo.png'
 import './assets/style.css'
-import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { HelmetProvider } from 'react-helmet-async'
+import { Routes, Route} from 'react-router-dom'
+import HomePage from './views/home'
+import DocsPage from './views/docs'
 
-export default function RunmixApp({helmetContext = {}}) {
-  const [visible, setVisible] = useState(false)
-  const handleClick = () => setVisible(true)
+export default function RunmixApp({Router, routerProps, helmetContext = {}}) {
   return (
     <HelmetProvider context={helmetContext}>
-      <div className='app'>
-        <Helmet>
-          <title>首页</title>
-        </Helmet>
-        <h1>Welcome to Runmix</h1>
-        <div>
-          <img src={logo} style={{width: 60}} />
-        </div>
-        {visible && <div>You clicked button</div>}
-        <button className='btn' onClick={handleClick}>Click me to test hydration</button>
-      </div>
+      <Router {...routerProps}>
+        <Routes>
+          <Route path='/' element={<HomePage />}></Route>
+          <Route path='/docs' element={<DocsPage />}></Route>
+        </Routes>
+      </Router>
     </HelmetProvider>
   );
 }

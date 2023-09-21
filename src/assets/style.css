@@ -6,6 +6,10 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  text-align: center;
+}
+a {
+  color: blue;
 }
 .app {
   text-align: center;

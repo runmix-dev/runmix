@@ -1,6 +1,8 @@
 const path = require('path')
 const AssetsPlugin = require('assets-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const { getDevPublicPath } = require('./utils')
 
 module.exports = (env = {}) => {
   const isProd = !!env.prod
@@ -41,7 +43,7 @@ module.exports = (env = {}) => {
       path: path.resolve(__dirname, '../dist/client/static'),
       filename: `bundle-[contenthash].${isProd ? 'js' : 'mjs'}`,
       chunkFilename: `[id].[chunkhash].${isProd ? 'js' : 'mjs'}`,
-      publicPath: 'http://localhost:3001/static/'
+      publicPath: getDevPublicPath(isProd)
     },
     plugins: [
       new MiniCssExtractPlugin({
@@ -51,7 +53,15 @@ module.exports = (env = {}) => {
       new AssetsPlugin({
         filename: './dist/server/assets.json',
         fileTypes: [isProd ? 'js': 'mjs', 'css']
+      }),
+      new CopyPlugin({
+        patterns: [
+          {from: './public', to: path.resolve(__dirname, '../dist/client')}
+        ]
       })
-    ]
+    ],
+    resolve: {
+      extensions: ['.js', '.json', '.jsx']
+    }
   }
 }
