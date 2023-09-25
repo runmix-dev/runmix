@@ -1,6 +1,6 @@
 
 import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
+import { Link } from '@components/react-router-dom'
 
 export default function DocsPage() {
   return (

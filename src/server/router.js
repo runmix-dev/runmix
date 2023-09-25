@@ -1,28 +1,24 @@
 import express from 'express'
 import { renderToString } from 'react-dom/server'
-import RunmixApp from '../App.jsx'
 import assets from '@dist/server/assets.json'
-import { StaticRouter } from 'react-router-dom/server'
+import { HelmetProvider } from 'react-helmet-async'
+import routes from '../shared/routes'
 
 const routers = express.Router()
 
 routers.get('/*', async (req, res) => {
+  if (!routes[req.path]) {
+    return res.send(404)
+  }
   const helmetContext = {}
-  const appString = await renderToString(
-  <RunmixApp
-    helmetContext={helmetContext}
-    Router={StaticRouter}
-    routerProps={{
-      location: req.originalUrl
-    }}
-  />
-  )
+  const App = (await routes[req.path].component()).default
+  const appString = await renderToString(<HelmetProvider context={helmetContext}><App /></HelmetProvider>)
   const {helmet} = helmetContext
   res.render('index', {
     appString,
     titleTag: helmet.title.toString(),
-    injectedPreloadState: {},
     assets,
+    injectedPreloadState: {},
     isProd: __PROD__,
   })
 })

@@ -46,7 +46,8 @@ module.exports = (env = {}) => {
     },
     resolve: {
       alias: {
-        '@dist': path.resolve(__dirname, '../dist')
+        '@dist': path.resolve(__dirname, '../dist'),
+        '@components': path.resolve(__dirname, '../src/components'),
       },
       extensions: ['.js', '.json', '.jsx']
     },

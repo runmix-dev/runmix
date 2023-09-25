@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import logo from '../../assets/images/logo.png'
 import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
+import { Link } from '@components/react-router-dom'
 
 export default function HomePage() {
   const [visible, setVisible] = useState(false)
