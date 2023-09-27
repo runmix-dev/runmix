@@ -1,6 +1,6 @@
 {
   "name": "runmix",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,9 +12,14 @@
     "build-nginx": "node ./deploy/nginx/build.js",
     "test": "jest"
   },
+  "bin": "./bin/generate-app.js",
   "keywords": [],
-  "author": "",
+  "author": "jinlingxi <jinlingxi@gmail.com>()",
+  "author2": "Jinling Xi <jinlingxi@gmail.com> (https://runmix.dev)",
   "license": "ISC",
+  "files": [
+    "bin"
+  ],
   "dependencies": {
     "ejs": "^3.1.9",
     "eventemitter3": "^5.0.1",
