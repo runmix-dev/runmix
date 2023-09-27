@@ -10,14 +10,13 @@ If you are a contributer of Runmix, you will get the course for free.
 
 ## usage
 
-using npm
+Create a ssr project using runmix
 ```
-npm install
-npm run dev
+npx runmix my-ssr-app
 ```
 
-using pnpm
+Start dev
 ```
-pnpm install
-pnpm dev
+cd my-ssr-app
+npm run dev
 ```
