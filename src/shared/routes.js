@@ -1,6 +1,6 @@
 const routes = {
   '/': {
-    component: () => import('../views/home')
+    component: () => import('../views/home'),
   },
   '/docs': {
     component: () => import('../views/docs')
