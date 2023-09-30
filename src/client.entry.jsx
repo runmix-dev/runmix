@@ -1,47 +1,45 @@
 import { hydrateRoot } from 'react-dom/client';
-import routes from './shared/routes'
+import createRoutes from './shared/routes'
 import './assets/style.css'
 import { HelmetProvider } from 'react-helmet-async'
-import { emitter } from '@components/react-router-dom'
 import { Provider } from 'react-redux'
+import { createBrowserRouter, RouterProvider, matchRoutes } from 'react-router-dom'
 import store from './stores'
 
 let reactRoot
 
-const watchRoute = () => {
-  emitter.on('routechange', evt => {
-    const {to, state} = evt
-    replaceRoot(to)
-  })
+async function prepareComponent(routes) {
+  let lazyMatches = matchRoutes(
+    routes,
+    window.location
+  )?.filter((m) => m.route.lazy)
+
+  if (lazyMatches && lazyMatches.length > 0) {
+    await Promise.all(
+      lazyMatches.map(async (m) => {
+        let routeModule = await m.route.lazy();
+        Object.assign(m.route, {
+          ...routeModule,
+          lazy: undefined,
+        });
+      })
+    );
+  }
 }
 
-const replaceRoot = (pathname) => {
-  routes[pathname].component().then(({default: App}) => {
-    const helmetContext = {}
-    reactRoot.render(
-      <Provider store={store}>
-        <HelmetProvider context={helmetContext}>
-          <App />
-        </HelmetProvider>
-      </Provider>
-    )
-  })
-}
-
-const hydrate = () => {
-  const {pathname} = window.location
-  routes[pathname].component().then(({default: App}) => {
-    const helmetContext = {}
-    const { pageProps } = window.__PRELOADED_STATE__
-    reactRoot = hydrateRoot(document.getElementById('root'), (
-      <Provider store={store}>
-        <HelmetProvider context={helmetContext}>
-          <App {...pageProps} />
-        </HelmetProvider>
-      </Provider>
-    ))
-  })
-  watchRoute()
+const hydrate = async () => {
+  const routes = createRoutes({ store })
+  await prepareComponent(routes)
+  const helmetContext = {}
+  let router = createBrowserRouter(routes);
+  reactRoot = hydrateRoot(document.getElementById('root'), (
+    <Provider store={store}>
+      <HelmetProvider context={helmetContext}>
+        <RouterProvider router={router}>
+        </RouterProvider>
+      </HelmetProvider>
+    </Provider>
+  ))
 }
 
 hydrate()

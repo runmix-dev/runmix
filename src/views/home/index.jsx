@@ -1,20 +1,22 @@
 import { useState } from 'react'
 import logo from '../../assets/images/logo.png'
 import { Helmet } from 'react-helmet-async'
-import { Link } from '@components/react-router-dom'
 import { updateSiteName } from '../../stores/home'
 import { useSelector } from 'react-redux'
+import { json, useLoaderData, Link } from 'react-router-dom'
 
-export default function HomePage({version}) {
+export function Component() {
   const [visible, setVisible] = useState(false)
   const handleClick = () => setVisible(true)
   const sitename = useSelector(state => state.home.sitename)
+  const { version } = useLoaderData()
   return (
     <div className='app'>
       <Helmet>
         <title>Runmix Home Page</title>
       </Helmet>
-      <h1>Welcome to {sitename}, current version: {version || '0.0.0'}</h1>
+      <h1>Welcome to {sitename}</h1>
+      <div>Current version: {version || '0.0.0'}</div>
       <div>
         <Link to="/docs">Go to docs page</Link>
       </div>
@@ -27,7 +29,11 @@ export default function HomePage({version}) {
   )
 }
 
-export const getServerSideProps = async ({ store }) => {
+Component.displayName =  'HomePage'
+
+export const loader = async ({ store }) => {
   store.dispatch(updateSiteName('Runmix Beta'))
-  return { version: '0.0.1' }
+  return json({ version: '0.0.1' })
 }
+
+export default Component

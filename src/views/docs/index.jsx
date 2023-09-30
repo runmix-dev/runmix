@@ -1,8 +1,8 @@
 
 import { Helmet } from 'react-helmet-async'
-import { Link } from '@components/react-router-dom'
+import { Link } from 'react-router-dom'
 
-export default function DocsPage() {
+export function Component() {
   return (
     <div>
       <Helmet>
@@ -17,3 +17,5 @@ export default function DocsPage() {
     </div>
   )
 }
+
+Component.displayName = 'DocsPage'

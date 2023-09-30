@@ -2,25 +2,29 @@ import express from 'express'
 import { renderToString } from 'react-dom/server'
 import assets from '@dist/server/assets.json'
 import { HelmetProvider } from 'react-helmet-async'
-import routes from '../shared/routes'
 import createStore from '../stores/create'
 import { Provider } from 'react-redux'
+import { createStaticHandler, StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
+import createFetchRequest from './request'
+import createRoutes from '../shared/routes'
 
 const routers = express.Router()
 
-routers.get('/*', async (req, res) => {
-  if (!routes[req.path]) {
-    return res.send(404)
-  }
+routers.get('*', async (req, res) => {
+  const fetchRequest = createFetchRequest(req)
   const helmetContext = {}
-  const { default: App, getServerSideProps } = await routes[req.path].component();
   const store = createStore({})
-  const pageProps = getServerSideProps ? await getServerSideProps({ store }) : {};
-  const injectedPreloadState = {store: store.getState(), pageProps}
+  const routes = createRoutes({ store })
+  const handler = createStaticHandler(routes)
+  const context = await handler.query(fetchRequest)
+  const router = createStaticRouter(handler.dataRoutes, context)
+  const injectedPreloadState = {store: store.getState()}
+  
   const appString = renderToString(
     <Provider store={store}>
       <HelmetProvider context={helmetContext}>
-        <App {...pageProps} />
+        <StaticRouterProvider router={router} context={context}>
+        </StaticRouterProvider>
       </HelmetProvider>
     </Provider>
   )
