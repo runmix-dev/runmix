@@ -2,6 +2,7 @@ const path = require('path')
 const nodeExternals = require('webpack-node-externals')
 const { getWebpackDefinePlugin, getDevPublicPath } = require('./utils')
 const webpack = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = (env = {}) => {
   const isProd = !!env.prod
@@ -40,7 +41,10 @@ module.exports = (env = {}) => {
         },
         {
           test: /\.css$/,
-          use: ['ignore-loader']
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          generator: {
+            emit: false
+          }
         }
       ],
     },
@@ -52,11 +56,16 @@ module.exports = (env = {}) => {
       extensions: ['.js', '.json', '.jsx']
     },
     plugins: [
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[id].[chunkhash].css',
+      }),
       new webpack.DefinePlugin(getWebpackDefinePlugin({
         __DEV__: !isProd,
         __PROD__: isProd,
         __SERVER__: true,
       }))
-    ]
+    ],
+    cache: isProd ? { type: 'filesystem' } : false,
   }
 }

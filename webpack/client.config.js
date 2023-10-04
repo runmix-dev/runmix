@@ -65,6 +65,7 @@ module.exports = (env = {}) => {
       alias: {
         '@components': path.resolve(__dirname, '../src/components'),
       }
-    }
+    },
+    cache: isProd ? { type: 'filesystem' } : false,
   }
 }
