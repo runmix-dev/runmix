@@ -15,7 +15,7 @@ export function Component() {
       <Helmet>
         <title>Runmix Home Page</title>
       </Helmet>
-      <h1>Welcome to {sitename}</h1>
+      <h1 className='text-xl font-bold'>Welcome to {sitename}</h1>
       <div>Current version: {version || '0.0.0'}</div>
       <div>
         <Link to="/docs">Go to docs page</Link>
