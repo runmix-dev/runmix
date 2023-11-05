@@ -6,6 +6,7 @@ server
   {{/if}}
   server_name {{domain}};
   index index.html;
+  {{#if spa}}root {{spa_root}}{{/if}};
 
   {{#if ssl}}
   ssl_certificate {{ssl_certificate}};
@@ -18,7 +19,16 @@ server
   add_header Strict-Transport-Security "max-age=31536000";
   {{/if}}
 
+  {{#if spa}}
+  location / {
+    try_files $uri $uri/ /index.html;
+    if ($request_filename ~ .*\.html$) {
+      add_header Cache-Control "no-store, no-cache, must-revalidate";
+    }
+  }
+  {{else}}
   location / {
     proxy_pass http://localhost:{{port}};
   }
+  {{/if}}
 }

@@ -1,12 +1,11 @@
 import express from 'express'
 import { renderToString } from 'react-dom/server'
 import assets from '@dist/server/assets.json'
-import { HelmetProvider } from 'react-helmet-async'
 import createStore from '../stores/create'
-import { Provider } from 'react-redux'
 import { createStaticHandler, StaticRouterProvider, createStaticRouter } from 'react-router-dom/server'
 import createFetchRequest from './request'
 import createRoutes from '../shared/routes'
+import createApp from '../universal-app';
 
 const routers = express.Router()
 
@@ -21,13 +20,13 @@ routers.get('*', async (req, res) => {
   const injectedPreloadState = {store: store.getState()}
   
   const appString = renderToString(
-    <Provider store={store}>
-      <HelmetProvider context={helmetContext}>
-        <StaticRouterProvider router={router} context={context}>
-        </StaticRouterProvider>
-      </HelmetProvider>
-    </Provider>
-  )
+    createApp({
+      store,
+      helmetContext,
+      RouterProvider: StaticRouterProvider,
+      routerProps: { router, context },
+    }),
+  );
   const {helmet} = helmetContext
   res.render('index', {
     appString,

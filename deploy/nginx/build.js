@@ -11,7 +11,9 @@ async function main() {
     ssl: process.env.ssl === 'true',
     ssl_certificate: process.env.ssl_certificate,
     ssl_certificate_key: process.env.ssl_certificate_key,
-    root: path.resolve(__dirname, '../../dist') + '/',    
+    root: path.resolve(__dirname, '../../dist') + '/',
+    spa_root: path.resolve(__dirname, '../../dist-spa'),
+    spa: true,
   })
   fs.writeFileSync(path.resolve(__dirname, 'nginx.conf'), content)
 }

@@ -1,12 +1,9 @@
 import { hydrateRoot } from 'react-dom/client';
 import createRoutes from './shared/routes'
-import './assets/style.css'
-import { HelmetProvider } from 'react-helmet-async'
-import { Provider } from 'react-redux'
 import { createBrowserRouter, RouterProvider, matchRoutes } from 'react-router-dom'
-import store from './stores'
+import createStore from './stores/create';
 
-let reactRoot
+const store = createStore({ preloadedState: window.__PRELOADED_STATE__.store });
 
 async function prepareComponent(routes) {
   let lazyMatches = matchRoutes(
@@ -32,14 +29,13 @@ const hydrate = async () => {
   await prepareComponent(routes)
   const helmetContext = {}
   let router = createBrowserRouter(routes);
-  reactRoot = hydrateRoot(document.getElementById('root'), (
-    <Provider store={store}>
-      <HelmetProvider context={helmetContext}>
-        <RouterProvider router={router}>
-        </RouterProvider>
-      </HelmetProvider>
-    </Provider>
-  ))
+  hydrateRoot(
+    document.getElementById('root'), (
+      createApp({
+        helmetContext, store, RouterProvider, routerProps: { router },
+      })
+    ),
+  );
 }
 
 hydrate()
