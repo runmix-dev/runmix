@@ -2,6 +2,7 @@ import { hydrateRoot } from 'react-dom/client';
 import createRoutes from './shared/routes'
 import { createBrowserRouter, RouterProvider, matchRoutes } from 'react-router-dom'
 import createStore from './stores/create';
+import createApp from './universal-app';
 
 const store = createStore({ preloadedState: window.__PRELOADED_STATE__.store });
 
